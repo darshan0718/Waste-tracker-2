@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Location Map</title>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
+  <style>
+    #map {
+      height: 90vh;
+      width: 100%;
+      margin: 0 auto;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h2>Map for Pincode: <span id="pincode-display"></span></h2>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    function getPincode() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('pincode');
+    }
+
+    async function showMap() {
+      const pincode = getPincode();
+      if (!pincode) {
+        alert('No pincode provided');
+        return;
+      }
+      document.getElementById('pincode-display').textContent = pincode;
+
+      const url = `https://nominatim.openstreetmap.org/search?postalcode=${pincode}&country=India&format=json`;
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data.length === 0) {
+          alert('Location not found for this pincode');
+          return;
+        }
+        const { lat, lon } = data[0];
+
+        const map = L.map('map').setView([lat, lon], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; OpenStreetMap contributors',
+        }).addTo(map);
+
+        L.marker([lat, lon]).addTo(map)
+          .bindPopup(`Pincode: ${pincode}`)
+          .openPopup();
+
+      } catch (error) {
+        alert('Error fetching location');
+        console.error(error);
+      }
+    }
+
+    showMap();
+  </script>
+</body>
+</html>
