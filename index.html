@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Waste Pickup Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin: 20px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #219150;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #eafaf1;
+      border-left: 4px solid #2ecc71;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Waste Pickup Tracker</h1>
+    <input type="text" id="areaInput" placeholder="Enter your area or pincode">
+    <button onclick="checkSchedule()">Check Schedule</button>
+    <div class="result" id="resultBox" style="display:none;"></div>
+  </div>
+
+  <script>
+    const scheduleData = {
+      "571401": {
+        area: "Mandya City",
+        dry: "Monday & Thursday",
+        wet: "Wednesday & Saturday",
+        alert: "No pickup on Sunday due to weekly off"
+      },
+      "571428": {
+        area: "Maddur",
+        dry: "Tuesday & Friday",
+        wet: "Monday & Thursday",
+        alert: "Pickup delayed on public holidays"
+      },
+      "571430": {
+        area: "Malavalli",
+        dry: "Monday & Thursday",
+        wet: "Tuesday & Saturday",
+        alert: "No pickup on national holidays"
+      },
+      "571434": {
+        area: "Pandavapura",
+        dry: "Wednesday & Friday",
+        wet: "Tuesday & Saturday",
+        alert: "Normal operations"
+      },
+      "571438": {
+        area: "Srirangapatna",
+        dry: "Monday & Thursday",
+        wet: "Wednesday & Saturday",
+        alert: "Expect delay during festivals"
+      },
+      "571432": {
+        area: "Nagamangala",
+        dry: "Tuesday & Friday",
+        wet: "Monday & Thursday",
+        alert: "No pickup on Sundays"
+      },
+      "571426": {
+        area: "Krishnarajapete",
+        dry: "Wednesday & Saturday",
+        wet: "Monday & Thursday",
+        alert: "Pickup available during holidays"
+      },
+      "571431": {
+        area: "Melukote",
+        dry: "Tuesday & Friday",
+        wet: "Wednesday & Saturday",
+        alert: "No alert currently"
+      },
+      "571402": {
+        area: "Yeliyur",
+        dry: "Monday & Thursday",
+        wet: "Tuesday & Friday",
+        alert: "Service resumed recently"
+      },
+      "571429": {
+        area: "Hemmanahalli",
+        dry: "Tuesday & Friday",
+        wet: "Wednesday & Saturday",
+        alert: "No pickup on Sundays"
+      }
+    };
+
+    function checkSchedule() {
+      const input = document.getElementById('areaInput').value.trim();
+      const resultBox = document.getElementById('resultBox');
+      const data = scheduleData[input];
+
+      if (data) {
+        resultBox.innerHTML = `
+          <strong>Area:</strong> ${data.area}<br>
+          <strong>Dry Waste:</strong> ${data.dry}<br>
+          <strong>Wet Waste:</strong> ${data.wet}<br>
+          <strong>Note:</strong> ${data.alert}
+        `;
+        resultBox.style.display = 'block';
+      } else {
+        resultBox.innerHTML = 'No schedule found for this area.';
+        resultBox.style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>
